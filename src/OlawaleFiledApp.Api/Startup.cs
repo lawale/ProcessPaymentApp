@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using OlawaleFiledApp.Core;
 
 namespace OlawaleFiledApp.Api
 {
@@ -18,7 +19,6 @@ namespace OlawaleFiledApp.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRouting(x => x.LowercaseUrls = true);
             services.AddLogging(opt =>
             {
                 opt.AddSimpleConsole(c =>
@@ -29,6 +29,10 @@ namespace OlawaleFiledApp.Api
                     c.TimestampFormat = "[yyyy-MM-dd-HH-mm-ss] ";
                 });
             });
+            services.InitCoreServicesAndRepositories();
+            services.AddRouting(x => x.LowercaseUrls = true);
+            
+            
 
         }
 
