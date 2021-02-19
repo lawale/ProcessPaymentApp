@@ -50,7 +50,7 @@ namespace OlawaleFiledApp.Api
             {
                 endpoints.Map("/home", async (context) =>
                 {
-                    await context.Response.WriteAsync("Hello World");
+                    await context.Response.WriteAsync($"Hello World!");
                 });
                 // endpoints.MapControllers();
             });
