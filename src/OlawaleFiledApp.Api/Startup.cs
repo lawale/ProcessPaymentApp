@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
+using OlawaleFiledApp.Api.Middlewares;
 using OlawaleFiledApp.Api.Validation;
 using OlawaleFiledApp.Core;
 
@@ -56,11 +57,15 @@ namespace OlawaleFiledApp.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseMiddleware<ErrorHandlerMiddleware>(); //Handle Exceptions Gracefully 
             }
             
             app.UseSwagger();
@@ -71,7 +76,7 @@ namespace OlawaleFiledApp.Api
                 });
 
             app.UseRouting();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
