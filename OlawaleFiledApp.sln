@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OlawaleFiledApp.Api", "src\OlawaleFiledApp.Api\OlawaleFiledApp.Api.csproj", "{864775EF-9A93-481C-BBF7-A7F401E8F5E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OlawaleFiledApp.Core", "src\OlawaleFiledApp.Core\OlawaleFiledApp.Core.csproj", "{08A60F19-AB17-47C8-BC87-945218953BBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{864775EF-9A93-481C-BBF7-A7F401E8F5E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{864775EF-9A93-481C-BBF7-A7F401E8F5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{864775EF-9A93-481C-BBF7-A7F401E8F5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{864775EF-9A93-481C-BBF7-A7F401E8F5E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A60F19-AB17-47C8-BC87-945218953BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A60F19-AB17-47C8-BC87-945218953BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A60F19-AB17-47C8-BC87-945218953BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A60F19-AB17-47C8-BC87-945218953BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
