@@ -1,9 +1,10 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OlawaleFiledApp.Core.Constants;
 using OlawaleFiledApp.Core.Data;
 using OlawaleFiledApp.Core.Data.Repositories;
+using OlawaleFiledApp.Core.Services.Payments.Gateways;
+using OlawaleFiledApp.Core.Services.Payments.Gateways.Implementations;
 
 namespace OlawaleFiledApp.Core
 {
@@ -15,6 +16,10 @@ namespace OlawaleFiledApp.Core
         /// <param name="services"></param>
         public static void InitCoreServicesAndRepositories(this IServiceCollection services)
         {
+            services.AddHttpClient();
+            
+            services.AddHttpClient<IPaymentGateway, PremiumPaymentGateway>() //custom http client for premium retry policy
+                .AddPolicyHandler(GatewayPolicy.PremiumRetryPolicy());
             AutoInjectLayers(services);
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<AppDbContext>(x => x.UseInMemoryDatabase(StringConstants.ConnectionString));
