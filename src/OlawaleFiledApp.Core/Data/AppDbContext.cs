@@ -1,8 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OlawaleFiledApp.Core.Constants;
+using OlawaleFiledApp.Core.Domain;
 
 namespace OlawaleFiledApp.Core.Data
 {
@@ -30,7 +30,14 @@ namespace OlawaleFiledApp.Core.Data
             }
             optionsBuilder.UseInMemoryDatabase(StringConstants.ConnectionString);
         }
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Payment>()
+                .Property(p => p.Amount)
+                .HasPrecision(18, 2);
+            base.OnModelCreating(modelBuilder);
+        }
+
         public async Task<bool> TrySaveChangesAsync(ILogger logger)
         {
             try
