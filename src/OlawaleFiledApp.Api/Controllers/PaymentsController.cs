@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OlawaleFiledApp.Core.Models.Payloads;
 using OlawaleFiledApp.Core.Models.Resources;
 using OlawaleFiledApp.Core.Services;
+using OlawaleFiledApp.Core.Services.Payments;
 
 namespace OlawaleFiledApp.Api.Controllers
 {
@@ -17,6 +18,11 @@ namespace OlawaleFiledApp.Api.Controllers
             this.paymentService = paymentService;
         }
 
+        /// <summary>
+        /// Processes a payment
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<ObjectResource<PaymentResource>>> ProcessPayment([FromBody] PaymentPayload payload)
         {
@@ -24,7 +30,13 @@ namespace OlawaleFiledApp.Api.Controllers
             return HandleResponse(nameof(GetPayment), result);
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Retrieves A Payment
+        /// </summary>
+        /// <param name="paymentId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [HttpGet("{paymentId}")]
         public Task<ActionResult<ObjectResource<PaymentResource>>> GetPayment(Guid paymentId)
         {
             throw new NotImplementedException();

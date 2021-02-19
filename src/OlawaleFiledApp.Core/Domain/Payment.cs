@@ -18,6 +18,8 @@ namespace OlawaleFiledApp.Core.Domain
         [StringLength(3)]
         public string? SecurityCode { get; set; }
         
+        public PaymentState State { get; set; }
+        
         [Required]
         public decimal Amount { get; set; }
     }

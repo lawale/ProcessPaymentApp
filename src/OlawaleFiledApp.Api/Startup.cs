@@ -1,6 +1,8 @@
+using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,6 +45,14 @@ namespace OlawaleFiledApp.Api
             services.InitCoreServicesAndRepositories();
             services.AddRouting(x => x.LowercaseUrls = true);
             
+            services.AddSwaggerGen(c =>
+            {
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,16 +62,19 @@ namespace OlawaleFiledApp.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                c =>
+                {
+                    c.RoutePrefix = string.Empty;
+                });
 
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.Map("/home", async (context) =>
-                {
-                    await context.Response.WriteAsync($"Hello World!");
-                });
-                // endpoints.MapControllers();
+                endpoints.MapControllers();
             });
         }
     }
