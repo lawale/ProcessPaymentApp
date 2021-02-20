@@ -42,7 +42,7 @@ namespace OlawaleFiledApp.Api.Controllers
         /// <exception cref="NotImplementedException"></exception>
         [HttpGet("{paymentId}")]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<ObjectResource<PaymentResource>>> GetPayment(Guid paymentId)
+        public Task<ActionResult<ObjectResource<PaymentResource>>> GetPayment(Guid paymentId)
         {
             throw new NotImplementedException();
         }

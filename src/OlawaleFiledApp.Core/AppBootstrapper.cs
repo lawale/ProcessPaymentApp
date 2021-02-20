@@ -1,8 +1,6 @@
-using System;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using OlawaleFiledApp.Core.Constants;
 using OlawaleFiledApp.Core.Data;
 using OlawaleFiledApp.Core.Data.Repositories;
