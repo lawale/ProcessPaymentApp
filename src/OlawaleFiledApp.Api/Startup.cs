@@ -4,6 +4,8 @@ using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,6 +14,7 @@ using OlawaleFiledApp.Api.Middlewares;
 using OlawaleFiledApp.Api.Validation;
 using OlawaleFiledApp.Core;
 using OlawaleFiledApp.Core.Data;
+using OlawaleFiledApp.Core.Models.Constants;
 
 namespace OlawaleFiledApp.Api
 {
@@ -45,6 +48,12 @@ namespace OlawaleFiledApp.Api
                 });
             
             services.InitCoreServicesAndRepositories();
+            services.AddDbContext<AppDbContext>(x =>
+            {
+                var connection = new SqliteConnection($"Data Source={StringConstants.ConnectionString};Cache=Shared;Mode=Memory");
+                connection.Open();
+                x.UseSqlite(connection);
+            });
             services.AddRouting(x => x.LowercaseUrls = true);
             
             services.AddSwaggerGen(c =>

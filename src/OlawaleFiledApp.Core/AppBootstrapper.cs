@@ -16,7 +16,6 @@ namespace OlawaleFiledApp.Core
         /// Registers All Services In the core project into container
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="logger"></param>
         public static void InitCoreServicesAndRepositories(this IServiceCollection services)
         {
             AutoInjectLayers(services);
@@ -27,12 +26,6 @@ namespace OlawaleFiledApp.Core
             
             services.AddTransient<IPaymentGatewayFactory, PaymentGatewayFactory>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            var connection = new SqliteConnection($"Data Source={StringConstants.ConnectionString};Cache=Shared;Mode=Memory");
-            connection.Open();
-            services.AddDbContext<AppDbContext>(x =>
-            {
-                x.UseSqlite(connection);
-            });
         }
         
         private static void AutoInjectLayers(IServiceCollection serviceCollection)

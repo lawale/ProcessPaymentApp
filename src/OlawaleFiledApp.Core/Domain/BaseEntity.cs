@@ -12,6 +12,8 @@ namespace OlawaleFiledApp.Core.Domain
         
         //configuration for soft deletes
         public DateTime? DeletedAt { get; set; }
+        
+        public bool IsDeleted { get; set; }
 
         public BaseEntity()
         {

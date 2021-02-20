@@ -52,13 +52,16 @@ namespace OlawaleFiledApp.Core.Data.Repositories.Internal
             
         }
 
-        public ValueTask DeleteAsync(TEntity item, bool useSoftDelete)
+        public ValueTask DeleteAsync(TEntity item, bool useSoftDelete = false)
         {
             try
             {
-                if(useSoftDelete)
-                    item.DeletedAt = DateTime.UtcNow;;
-                
+                if (useSoftDelete)
+                {
+                    item.DeletedAt = DateTime.UtcNow;
+                    item.IsDeleted = true;
+                }
+
                 DbContext.Entry(item).State = useSoftDelete ? EntityState.Modified : EntityState.Deleted;
                 
                 return ValueTask.CompletedTask;

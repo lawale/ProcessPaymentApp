@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OlawaleFiledApp.Api", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OlawaleFiledApp.Core", "src\OlawaleFiledApp.Core\OlawaleFiledApp.Core.csproj", "{08A60F19-AB17-47C8-BC87-945218953BBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OlawaleFiledApp.Test", "src\OlawaleFiledApp.Test\OlawaleFiledApp.Test.csproj", "{C8EE55DC-A60A-4144-B095-FCF9956A4B0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,10 @@ Global
 		{08A60F19-AB17-47C8-BC87-945218953BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08A60F19-AB17-47C8-BC87-945218953BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08A60F19-AB17-47C8-BC87-945218953BBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8EE55DC-A60A-4144-B095-FCF9956A4B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8EE55DC-A60A-4144-B095-FCF9956A4B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8EE55DC-A60A-4144-B095-FCF9956A4B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8EE55DC-A60A-4144-B095-FCF9956A4B0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

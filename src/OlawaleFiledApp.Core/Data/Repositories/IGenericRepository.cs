@@ -10,7 +10,7 @@ namespace OlawaleFiledApp.Core.Data.Repositories
         ValueTask<TEntity?> GetByIdAsync(Guid id);
         ValueTask<TEntity> CreateNewAsync(TEntity item);
         ValueTask UpdateAsync(TEntity item);
-        ValueTask DeleteAsync(TEntity item, bool useSoftDelete);
+        ValueTask DeleteAsync(TEntity item, bool useSoftDelete = false);
         IQueryable<TEntity> GetQuery();
     }
 }
