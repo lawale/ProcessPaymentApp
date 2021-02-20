@@ -7,6 +7,7 @@ using OlawaleFiledApp.Core.Services.Payments;
 
 namespace OlawaleFiledApp.Api.Controllers
 {
+    [ApiController]
     [Route("/[controller]")]
     [Consumes("application/json")]
     [Produces("application/json")]
@@ -39,12 +40,13 @@ namespace OlawaleFiledApp.Api.Controllers
         /// </summary>
         /// <param name="paymentId"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         [HttpGet("{paymentId}")]
-        [ProducesResponseType(500)]
-        public Task<ActionResult<ObjectResource<PaymentResource>>> GetPayment(Guid paymentId)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<ObjectResource<PaymentResource>>> GetPayment(Guid paymentId)
         {
-            throw new NotImplementedException();
+            var result = await paymentService.GetPaymentByIdAsync(paymentId);
+            return HandleResponse(result);
         }
     }
 }

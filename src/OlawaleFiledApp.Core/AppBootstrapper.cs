@@ -1,9 +1,9 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using OlawaleFiledApp.Core.Constants;
 using OlawaleFiledApp.Core.Data;
 using OlawaleFiledApp.Core.Data.Repositories;
+using OlawaleFiledApp.Core.Models.Constants;
 using OlawaleFiledApp.Core.Services.Payments.Gateways;
 using OlawaleFiledApp.Core.Services.Payments.Gateways.Factory;
 using OlawaleFiledApp.Core.Services.Payments.Gateways.Implementations;

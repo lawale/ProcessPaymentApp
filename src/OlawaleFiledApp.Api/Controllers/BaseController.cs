@@ -4,7 +4,6 @@ using OlawaleFiledApp.Core.Models.Resources;
 
 namespace OlawaleFiledApp.Api.Controllers
 {
-    [ApiController]
     public abstract class BaseController : Controller
     {
         protected ActionResult<TRes> HandleResponse<TRes>(TRes result) where TRes:StatusResource

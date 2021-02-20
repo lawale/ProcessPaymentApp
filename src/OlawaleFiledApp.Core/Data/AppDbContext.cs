@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using OlawaleFiledApp.Core.Constants;
 using OlawaleFiledApp.Core.Domain;
+using OlawaleFiledApp.Core.Models.Constants;
 
 namespace OlawaleFiledApp.Core.Data
 {

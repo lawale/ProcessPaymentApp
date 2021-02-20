@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using OlawaleFiledApp.Core.Data.Repositories;
@@ -42,18 +43,29 @@ namespace OlawaleFiledApp.Core.Services.Payments
             return result;
         }
 
+        public async Task<ObjectResource<PaymentResource>> GetPaymentByIdAsync(Guid paymentId)
+        {
+            var payment = await unitOfWork.PaymentRepository.GetByIdAsync(paymentId);
+
+            if (payment is null)
+                return new ObjectResource<PaymentResource>
+                {
+                    Message = "Payment Could Not Be Found",
+                    ResponseType = ResponseType.NoData, Status = false
+                };
+
+            return new ObjectResource<PaymentResource>
+            {
+                Data = PaymentMapper.ConvertFrom(payment), Message = "Payment Successfully Retrieved",
+                ResponseType = ResponseType.Success, Status = true
+            };
+        }
+
         private async Task HandlePaymentResponse(Payment payment, ObjectResource<PaymentResource> result)
         {
             payment.State = result.Status ? PaymentState.Processed : PaymentState.Failed;
-            await unitOfWork.PaymentRepository.UpdateAsync(payment);
-
-            if (result.Status)
-            {
-                await unitOfWork.CommitAsync();
-                result.Data = PaymentMapper.ConvertFrom(payment);
-            }
-            else
-                await unitOfWork.RollbackAsync();
+            await unitOfWork.CommitAsync();
+            result.Data = PaymentMapper.ConvertFrom(payment);
         }
 
         private async Task<ObjectResource<PaymentResource>> HandlePaymentTypeProcessing(PaymentType paymentType,

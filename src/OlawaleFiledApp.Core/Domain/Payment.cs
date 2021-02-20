@@ -5,7 +5,7 @@ namespace OlawaleFiledApp.Core.Domain
 {
     public class Payment : BaseEntity
     {
-        [Required]
+        [Required, DataType(DataType.CreditCard)]
         public string CreditCardNumber { get; set; } = null!;
         
         [Required, StringLength(24)]
@@ -14,9 +14,10 @@ namespace OlawaleFiledApp.Core.Domain
         [Required, DataType(DataType.Date)]
         public DateTime ExpirationDate { get; set; }
         
-        [StringLength(3)]
+        [StringLength(3, MinimumLength = 3)]
         public string? SecurityCode { get; set; }
         
+        [EnumDataType(typeof(PaymentState))]
         public PaymentState State { get; set; }
         
         [Required]

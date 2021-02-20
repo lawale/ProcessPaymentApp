@@ -8,11 +8,6 @@ namespace OlawaleFiledApp.Api.Validation
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            
-        }
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
             if(!context.ModelState.IsValid)
             {
                 context.Result = new ObjectResult(new ValidationResource(context.ModelState))
@@ -20,6 +15,11 @@ namespace OlawaleFiledApp.Api.Validation
                     StatusCode =  StatusCodes.Status400BadRequest
                 };
             }
+        }
+
+        public void OnActionExecuted(ActionExecutedContext context)
+        {
+            
         }
     }
 }
