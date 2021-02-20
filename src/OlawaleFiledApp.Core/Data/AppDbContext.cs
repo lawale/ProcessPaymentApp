@@ -55,7 +55,8 @@ namespace OlawaleFiledApp.Core.Data
         {
             try
             {
-                await SaveChangesAsync();
+                var res = await SaveChangesAsync();
+                logger.LogInformation("{0} Operations Completed In the DB", res);
                 return true;
             }
             catch (DbUpdateException e)

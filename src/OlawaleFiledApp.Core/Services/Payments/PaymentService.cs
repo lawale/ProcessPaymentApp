@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using OlawaleFiledApp.Core.Data.Repositories;
 using OlawaleFiledApp.Core.Domain;
@@ -36,7 +37,7 @@ namespace OlawaleFiledApp.Core.Services.Payments
             var paymentType = DerivePaymentType(payload);
             logger.LogInformation("Derived Payment Type of {0} for {1}", paymentType, payload.Amount);
 
-            var result = await HandlePaymentTypeProcessing(payment, paymentType, payload);
+            var result = await HandlePaymentProcessingAsync(payment, paymentType, payload);
 
             await HandlePaymentResponse(payment, result);
 
@@ -66,53 +67,13 @@ namespace OlawaleFiledApp.Core.Services.Payments
             await unitOfWork.CommitAsync();
             result.Data = PaymentMapper.ConvertFrom(payment);
         }
-
-        private async Task<ObjectResource<PaymentResource>> HandlePaymentTypeProcessing(Payment payment, PaymentType paymentType,
-            PaymentPayload payload)
+        
+        private async Task<ObjectResource<PaymentResource>> HandlePaymentProcessingAsync(Payment payment, PaymentType paymentType, PaymentPayload payload)
         {
-            try
-            {
-                var paymentGateway = paymentGatewayFactory.ResolveGateway(paymentType);
-
-                if (paymentType == PaymentType.Expensive && paymentGateway is null)
-                {
-                    await AddPaymentState(payment.Id, paymentType, false, "Could Not Find Expensive Gateway");
-                    paymentGateway = paymentGatewayFactory.ResolveGateway(PaymentType.Cheap);
-                }
-
-                if (paymentGateway is not null)
-                    return await HandlePaymentProcessing(payment, paymentGateway, payload);
-
-                await AddPaymentState(payment.Id, paymentType, false, $"Could Not Find {paymentType} Gateway");
-
-            }
-            catch (PaymentGatewayException e)
-            {
-                logger.LogCritical(e, "No Gateway was found");
-                await AddPaymentState(payment.Id, paymentType, false, $"Could Not Resolve Any Gateway");
-            }
+            var result = await ProcessCardDebitAsync(payment.Id, paymentType, payload);
             
-            return new ObjectResource<PaymentResource>
-            {
-                Status = false,
-                Message = "No Payment Gateway available for processing payments",
-                ResponseType = ResponseType.ServiceError
-            };
-        }
-
-        private async Task<ObjectResource<PaymentResource>> HandlePaymentProcessing(Payment payment, IPaymentGateway paymentGateway,
-            PaymentPayload payload)
-        {
-            var result = await paymentGateway.ChargeCardAsync(payload);
-
-            var isSuccessful = result.HasValue && result.Value;
-            var errorMessage = result.HasValue ? "Could Not Debit Card" : "Service Error Occurred On Gateway";
-            
-            await AddPaymentState(payment.Id, paymentGateway.Type, isSuccessful,
-                isSuccessful ? string.Empty : errorMessage);
-
-            if (paymentGateway.Type == PaymentType.Expensive && (!result.HasValue || !result.Value))
-                result = await HandleRetryOnCheapGateway(payment, payload);
+            if (paymentType == PaymentType.Expensive && (!result.HasValue || !result.Value))
+                result = await HandleRetryOnCheapGateway(payment.Id, payload);
 
             if (result.HasValue && result.Value)
             {
@@ -135,16 +96,58 @@ namespace OlawaleFiledApp.Core.Services.Payments
             };
         }
 
-        private async Task<bool> HandleRetryOnCheapGateway(Payment payment, PaymentPayload payload)
+        private async Task<bool?> ProcessCardDebitAsync(Guid paymentId, PaymentType paymentType, PaymentPayload payload)
         {
-            var result = await HandlePaymentTypeProcessing(payment, PaymentType.Cheap, payload);
+            var paymentGateway = await ResolvePaymentGateway(paymentId, paymentType);
+            if(paymentGateway is null)
+                return null;
+            
+            var result = await paymentGateway.ChargeCardAsync(payload);
+            
+            var isSuccessful = result.HasValue && result.Value;
+            var errorMessage = result.HasValue ? "Could Not Debit Card" : "Service Error Occurred On Gateway";
+            
+            await AddPaymentState(paymentId, paymentGateway.Type, isSuccessful,
+                isSuccessful ? string.Empty : errorMessage);
 
-            if (!result.Status)
+            return result;
+        }
+        
+        private async Task<IPaymentGateway?> ResolvePaymentGateway(Guid paymentId, PaymentType paymentType)
+        {
+            try
+            {
+                var paymentGateway = paymentGatewayFactory.ResolveGateway(paymentType);
+
+                if (paymentGateway is not null) return paymentGateway;
+            
+                await AddPaymentState(paymentId, paymentType, false, $"Could Not Find {paymentType} Gateway");
+                if (paymentType != PaymentType.Expensive) return paymentGateway;
+            
+                paymentGateway = paymentGatewayFactory.ResolveGateway(PaymentType.Cheap);
+                    
+                if(paymentGateway is null)
+                    await AddPaymentState(paymentId, paymentType, false, "Could Not Find Cheap Gateway To Replace Expensive Gateway");
+
+                return paymentGateway;
+            }
+            catch (PaymentGatewayException e)
+            {
+                logger.LogCritical(e, "No Gateway was found");
+                await AddPaymentState(paymentId, paymentType, false, $"Could Not Resolve Any Gateway");
+            }
+
+            return null;
+        }
+        
+        private async Task<bool?> HandleRetryOnCheapGateway(Guid paymentId, PaymentPayload payload)
+        {
+            var result = await ProcessCardDebitAsync(paymentId, PaymentType.Cheap, payload);
+            if (!result.HasValue || !result.Value)
             {
                 logger.LogError("Could Not Process Payment with Either Cheap Or Expensive Gateway");
             }
-
-            return result.Status;
+            return result;
         }
 
         //Add payment state after each card charge try
