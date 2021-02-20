@@ -46,7 +46,7 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             Assert.Multiple(() =>
@@ -66,7 +66,7 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             await appDbContext.SaveChangesAsync();
@@ -89,7 +89,7 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             await appDbContext.SaveChangesAsync();
@@ -113,7 +113,7 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             await appDbContext.SaveChangesAsync();
@@ -137,7 +137,7 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             await appDbContext.SaveChangesAsync();
@@ -161,18 +161,18 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
             
             var paymentOne = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-89785-1223-3234",
-                State = PaymentState.Failed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Failed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             await appDbContext.SaveChangesAsync();
 
-            var payments = await repo.GetQuery().Where(x => x.State == PaymentState.Processed).ToListAsync();
+            var payments = await repo.GetQuery().Where(x => x.State == PaymentResult.Processed).ToListAsync();
 
             Assert.Multiple(() =>
             {

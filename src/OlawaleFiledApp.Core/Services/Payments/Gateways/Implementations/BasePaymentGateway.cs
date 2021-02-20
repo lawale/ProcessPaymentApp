@@ -22,7 +22,7 @@ namespace OlawaleFiledApp.Core.Services.Payments.Gateways.Implementations
         
         public abstract PaymentType Type { get; }
 
-        public virtual async Task<bool> ChargeCardAsync(PaymentPayload payload)
+        public virtual async Task<bool?> ChargeCardAsync(PaymentPayload payload)
         {
             var client = httpClientFactory.CreateClient(Type.ToString());
             var body  = JsonSerializer.Serialize(payload);
@@ -41,13 +41,31 @@ namespace OlawaleFiledApp.Core.Services.Payments.Gateways.Implementations
                 logger.LogInformation("Response From {0} Gateway: {1}", Type, result);
 
                 response.EnsureSuccessStatusCode();
-                return true;
+                
+                return ProcessResponse(result);
             }
             catch (Exception e)
             {
                 logger.LogError(e, "Call to {0} Gateway failed", Type);
-                return false;
+                return null;
             }
+        }
+
+        private bool ProcessResponse(string resultStr)
+        {
+            logger.LogInformation("Processing {Type} Gateway Result", Type);
+            using var doc = JsonDocument.Parse(resultStr);
+
+            var status = false;
+            if (!doc.RootElement.TryGetProperty("status", out var statusProp))
+                return status;
+
+            if (statusProp.ValueKind == JsonValueKind.String)
+                _ = bool.TryParse(statusProp.ToString(), out status);
+            else
+                status = statusProp.GetBoolean();
+
+            return status;
         }
     }
 }

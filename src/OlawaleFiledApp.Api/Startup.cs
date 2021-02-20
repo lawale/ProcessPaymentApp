@@ -52,7 +52,7 @@ namespace OlawaleFiledApp.Api
             {
                 var connection = new SqliteConnection($"Data Source={StringConstants.ConnectionString};Cache=Shared;Mode=Memory");
                 connection.Open();
-                x.UseSqlite(connection);
+                x.UseSqlite(connection, b => b.MigrationsAssembly("OlawaleFiledApp.Api"));
             });
             services.AddRouting(x => x.LowercaseUrls = true);
             

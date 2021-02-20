@@ -5,6 +5,6 @@ namespace OlawaleFiledApp.Core.Services.Payments.Gateways
 {
     public interface IPaymentGateway : IPaymentType
     {
-        Task<bool> ChargeCardAsync(PaymentPayload payload);
+        Task<bool?> ChargeCardAsync(PaymentPayload payload);
     }
 }

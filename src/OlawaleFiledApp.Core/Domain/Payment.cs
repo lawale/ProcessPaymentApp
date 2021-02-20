@@ -18,7 +18,7 @@ namespace OlawaleFiledApp.Core.Domain
         public string? SecurityCode { get; set; }
         
         [EnumDataType(typeof(PaymentState))]
-        public PaymentState State { get; set; }
+        public PaymentResult State { get; set; }
         
         [Required]
         public decimal Amount { get; set; }

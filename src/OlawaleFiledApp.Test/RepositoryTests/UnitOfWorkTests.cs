@@ -106,7 +106,7 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             var paymentExists = await appDbContext.Payments.AnyAsync();
@@ -146,7 +146,7 @@ namespace OlawaleFiledApp.Test.RepositoryTests
             var payment = await repo.CreateNewAsync(new Payment
             {
                 Amount = 3, CardHolder = "Olawale Lawal", CreditCardNumber = "3333-4444-1223-3234",
-                State = PaymentState.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
+                State = PaymentResult.Processed, ExpirationDate = DateTime.UtcNow.AddMonths(11), SecurityCode = "332"
             });
 
             var paymentExists = await appDbContext.Payments.AnyAsync();

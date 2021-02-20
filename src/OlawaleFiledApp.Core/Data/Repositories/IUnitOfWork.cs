@@ -33,6 +33,8 @@ namespace OlawaleFiledApp.Core.Data.Repositories
         /// <exception cref="System.NullReferenceException">Thrown if transaction does not exist</exception>
         Task RollbackAsync();
         
-        IPaymentRepository PaymentRepository { get; } 
+        IPaymentRepository PaymentRepository { get; }
+        
+        IPaymentStateRepository PaymentStateRepository { get; }
     }
 }

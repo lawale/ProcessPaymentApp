@@ -23,6 +23,8 @@ namespace OlawaleFiledApp.Core.Data
         }
 
         public DbSet<Payment> Payments { get; set; } = null!;
+
+        public DbSet<PaymentState> PaymentStates { get; set; } = null!;
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,7 +35,7 @@ namespace OlawaleFiledApp.Core.Data
             }
             var connection = new SqliteConnection($"Data Source={StringConstants.ConnectionString};Cache=Shared;Mode=Memory");
             connection.Open();
-            optionsBuilder.UseSqlite(connection);
+            optionsBuilder.UseSqlite(connection, b => b.MigrationsAssembly("OlawaleFiledApp.Api"));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +43,12 @@ namespace OlawaleFiledApp.Core.Data
                 .Property(p => p.Amount)
                 .HasPrecision(18, 2);
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Payment>()
+                .HasMany<PaymentState>()
+                .WithOne(x => x.Payment)
+                .HasForeignKey(x => x.PaymentId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public async Task<bool> TrySaveChangesAsync(ILogger logger)

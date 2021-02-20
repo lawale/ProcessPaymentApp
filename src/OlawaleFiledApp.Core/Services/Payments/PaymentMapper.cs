@@ -12,7 +12,7 @@ namespace OlawaleFiledApp.Core.Services.Payments
             {
                 Amount = payload.Amount, CardHolder = payload.CardHolder,
                 CreditCardNumber = payload.CreditCardNumber, ExpirationDate = payload.ExpirationDate,
-                SecurityCode = payload.SecurityCode, State = PaymentState.Pending
+                SecurityCode = payload.SecurityCode, State = PaymentResult.Pending
             };
         }
 
