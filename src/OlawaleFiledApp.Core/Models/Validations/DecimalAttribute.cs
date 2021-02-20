@@ -11,7 +11,7 @@ namespace OlawaleFiledApp.Core.Models.Validations
         public DecimalAttribute(int validAmount, ValidationComparison comparison)
         {
             if (!TryParse(validAmount.ToString(), out this.validAmount))
-                this.validAmount = decimal.Zero;
+                this.validAmount = Zero;
             this.comparison = comparison;
         }
 
