@@ -14,7 +14,7 @@ namespace OlawaleFiledApp.Core.Services.Payments.Gateways.Implementations
         private readonly IHttpClientFactory httpClientFactory;
         protected abstract string GatewayEndpoint { get; }
 
-        protected BasePaymentGateway(ILogger<BasePaymentGateway> logger, IHttpClientFactory httpClientFactory)
+        public BasePaymentGateway(ILogger<BasePaymentGateway> logger, IHttpClientFactory httpClientFactory)
         {
             this.logger = logger;
             this.httpClientFactory = httpClientFactory;
@@ -24,7 +24,7 @@ namespace OlawaleFiledApp.Core.Services.Payments.Gateways.Implementations
 
         public virtual async Task<bool> ChargeCardAsync(PaymentPayload payload)
         {
-            var client = httpClientFactory.CreateClient();
+            var client = httpClientFactory.CreateClient(Type.ToString());
             var body  = JsonSerializer.Serialize(payload);
             using var content = new StringContent(body, Encoding.UTF8, "application/json");
             

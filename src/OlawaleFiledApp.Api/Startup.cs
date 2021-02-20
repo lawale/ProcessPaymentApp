@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging.Console;
 using OlawaleFiledApp.Api.Middlewares;
 using OlawaleFiledApp.Api.Validation;
 using OlawaleFiledApp.Core;
+using OlawaleFiledApp.Core.Data;
 
 namespace OlawaleFiledApp.Api
 {
@@ -57,12 +58,13 @@ namespace OlawaleFiledApp.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext appDbContext)
         {
+            appDbContext.Database.EnsureCreated(); //Hack to get Sqlite to create DB
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }
+            }   
             else
             {
                 app.UseMiddleware<ErrorHandlerMiddleware>(); //Handle Exceptions Gracefully 

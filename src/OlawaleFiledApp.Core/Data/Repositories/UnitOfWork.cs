@@ -11,10 +11,16 @@ namespace OlawaleFiledApp.Core.Data.Repositories
         private readonly ILogger<UnitOfWork> logger;
         private IDbContextTransaction transaction = null!;
 
-        public UnitOfWork(AppDbContext dbContext, ILogger<UnitOfWork> logger)
+        public UnitOfWork(AppDbContext dbContext, ILogger<UnitOfWork> logger, IPaymentRepository paymentRepository)
         {
             this.dbContext = dbContext;
             this.logger = logger;
+            PaymentRepository = paymentRepository;
+        }
+
+        public bool TransactionExists()
+        {
+            return transaction is not null!;
         }
         
         public async Task<bool> StartAsync()
@@ -52,6 +58,8 @@ namespace OlawaleFiledApp.Core.Data.Repositories
 
             await DisposeTransactionAsync();
         }
+
+        public IPaymentRepository PaymentRepository { get; }
 
         private void ValidateTransaction()
         {

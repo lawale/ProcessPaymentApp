@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OlawaleFiledApp.Core.Constants;
@@ -20,6 +21,8 @@ namespace OlawaleFiledApp.Core.Data
         {
             this.dco = dco;
         }
+
+        public DbSet<Payment> Payments { get; set; } = null!;
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,7 +31,9 @@ namespace OlawaleFiledApp.Core.Data
                 base.OnConfiguring(optionsBuilder);
                 return;
             }
-            optionsBuilder.UseInMemoryDatabase(StringConstants.ConnectionString);
+            var connection = new SqliteConnection($"Data Source={StringConstants.ConnectionString};Cache=Shared;Mode=Memory");
+            connection.Open();
+            optionsBuilder.UseSqlite(connection);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

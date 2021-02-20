@@ -26,7 +26,7 @@ namespace OlawaleFiledApp.Core.Services.Payments.Gateways.Factory
                 throw new PaymentGatewayException("No Payment Gateway Found");
             }
 
-            var paymentGateway = paymentGateways.FirstOrDefault();
+            var paymentGateway = paymentGateways.FirstOrDefault(x => x.Type == paymentType);
 
             if (paymentGateway is null)
             {

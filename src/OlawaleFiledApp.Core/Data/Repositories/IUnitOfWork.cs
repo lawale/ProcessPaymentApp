@@ -5,6 +5,12 @@ namespace OlawaleFiledApp.Core.Data.Repositories
     public interface IUnitOfWork
     {
         /// <summary>
+        /// Check For Any Available Transaction
+        /// </summary>
+        /// <returns></returns>
+        bool TransactionExists();
+        
+        /// <summary>
         /// Starts  a transaction in the DB
         /// </summary>
         /// <remarks>Returns false when a transaction already exists and true when a new transaction is started</remarks>
@@ -26,5 +32,7 @@ namespace OlawaleFiledApp.Core.Data.Repositories
         /// <remarks>Disposes transaction after a rollback. Start another transaction for another rollback</remarks>
         /// <exception cref="System.NullReferenceException">Thrown if transaction does not exist</exception>
         Task RollbackAsync();
+        
+        IPaymentRepository PaymentRepository { get; } 
     }
 }

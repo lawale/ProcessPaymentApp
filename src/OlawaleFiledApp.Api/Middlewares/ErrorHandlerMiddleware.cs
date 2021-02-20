@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using OlawaleFiledApp.Core.Data.Repositories;
 using OlawaleFiledApp.Core.Models.Resources;
 
 namespace OlawaleFiledApp.Api.Middlewares
@@ -10,11 +11,13 @@ namespace OlawaleFiledApp.Api.Middlewares
     {
         private readonly RequestDelegate next;
         private readonly ILogger<ErrorHandlerMiddleware> logger;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
+        public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger, IUnitOfWork unitOfWork)
         {
             this.next = next;
             this.logger = logger;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task Invoke(HttpContext context)
@@ -25,6 +28,11 @@ namespace OlawaleFiledApp.Api.Middlewares
             }
             catch (Exception e)
             {
+                if (unitOfWork.TransactionExists())
+                {
+                    logger.LogInformation("Rolling Back Uncommitted unit of work");
+                    await unitOfWork.RollbackAsync();
+                }
                 var response = context.Response;
                 response.ContentType = "application/json";
 
