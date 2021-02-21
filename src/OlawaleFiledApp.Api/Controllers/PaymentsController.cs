@@ -26,6 +26,7 @@ namespace OlawaleFiledApp.Api.Controllers
         /// <param name="payload"></param>
         /// <returns></returns>
         [ProducesResponseType(200)]
+        [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [HttpPost]
