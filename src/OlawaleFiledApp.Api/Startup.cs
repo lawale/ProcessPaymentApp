@@ -67,7 +67,7 @@ namespace OlawaleFiledApp.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext appDbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext appDbContext, ILoggerFactory loggerFactory)
         {
             appDbContext.Database.EnsureCreated(); //Hack to get Sqlite to create DB
             if (env.IsDevelopment())
@@ -92,6 +92,9 @@ namespace OlawaleFiledApp.Api
             {
                 endpoints.MapControllers();
             });
+
+            if (env.IsProduction())
+                loggerFactory.AddFile("/logs/PaymentProcessing_{DateTime.Now:yy_MM_dd}.txt");
         }
     }
 }
