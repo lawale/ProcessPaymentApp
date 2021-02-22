@@ -18,11 +18,11 @@ namespace OlawaleFiledApp.Api.Controllers
             };
         }
         
-        protected ActionResult<TRes> HandleResponse<TRes>(string actionName, TRes result) where TRes:StatusResource
+        protected ActionResult<TRes> HandleResponse<TRes>(string actionName, object routeValues, TRes result) where TRes:StatusResource
         {
             return result.ResponseType switch
             {
-                ResponseType.Created => CreatedAtAction(actionName, result),
+                ResponseType.Created => CreatedAtAction(actionName, routeValues,  result),
                 _ => HandleResponse(result)
             };
         }

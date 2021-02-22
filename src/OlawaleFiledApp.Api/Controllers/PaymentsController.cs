@@ -33,7 +33,7 @@ namespace OlawaleFiledApp.Api.Controllers
         public async Task<ActionResult<ObjectResource<PaymentResource>>> ProcessPayment([FromBody] PaymentPayload payload)
         {
             var result = await paymentService.ProcessAsync(payload);
-            return HandleResponse(nameof(GetPayment), result);
+            return HandleResponse(nameof(GetPayment), new { paymentId = result.Data?.PaymentId }, result);
         }
 
         /// <summary>
